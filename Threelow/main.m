@@ -12,24 +12,28 @@
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         Dice *dice1 = [[Dice alloc] init];
-        [dice1 rollDice];
-        NSLog(@"Dice 1: %d", [dice1 currentValue]);
-        
         Dice *dice2 = [[Dice alloc] init];
-        [dice2 rollDice];
-        NSLog(@"Dice 2: %d", [dice2 currentValue]);
-        
         Dice *dice3 = [[Dice alloc] init];
-        [dice3 rollDice];
-        NSLog(@"Dice 3: %d", [dice3 currentValue]);
-        
         Dice *dice4 = [[Dice alloc] init];
-        [dice4 rollDice];
-        NSLog(@"Dice 4: %d", [dice4 currentValue]);
-        
         Dice *dice5 = [[Dice alloc] init];
-        [dice5 rollDice];
-        NSLog(@"Dice 5: %d", [dice5 currentValue]);
+        
+        char input[255];
+        NSString *userInput = @"roll";
+        
+        while([userInput isEqualToString:@"roll"]){
+            printf("To roll the dices type 'roll':\n");
+            fgets(input, 255, stdin);
+            userInput = [[[NSString stringWithUTF8String:input] lowercaseString] stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+            
+            [dice1 rollDice];
+            [dice2 rollDice];
+            [dice3 rollDice];
+            [dice4 rollDice];
+            [dice5 rollDice];
+            
+            NSLog(@"\nD1: %d - D2: %d - D3: %d - D4: %d - D5: %d", [dice1 currentValue], [dice2 currentValue], [dice3 currentValue], [dice4 currentValue], [dice5 currentValue]);
+            printf("\n");
+        }
     }
     return 0;
 }
