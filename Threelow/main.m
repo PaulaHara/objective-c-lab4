@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "Dice.h"
+#import "GameController.h"
+
+void printDices(GameController *gameController);
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -19,21 +22,70 @@ int main(int argc, const char * argv[]) {
         
         char input[255];
         NSString *userInput = @"roll";
+        NSMutableArray *dicesRolled = [[NSMutableArray alloc] initWithCapacity:6];
+        GameController *gameController = [[GameController alloc] initWithDiceArrays];
+        int numberOfDicesToHold, c;
         
         while([userInput isEqualToString:@"roll"]){
             printf("To roll the dices type 'roll':\n");
             fgets(input, 255, stdin);
             userInput = [[[NSString stringWithUTF8String:input] lowercaseString] stringByReplacingOccurrencesOfString:@"\n" withString:@""];
             
-            [dice1 rollDice];
-            [dice2 rollDice];
-            [dice3 rollDice];
-            [dice4 rollDice];
-            [dice5 rollDice];
+            if([userInput isEqualToString:@"roll"]){
+                [dice1 rollDice];
+                [dice2 rollDice];
+                [dice3 rollDice];
+                [dice4 rollDice];
+                [dice5 rollDice];
+                
+                [dicesRolled insertObject:dice1 atIndex:0];
+                [dicesRolled insertObject:dice2 atIndex:1];
+                [dicesRolled insertObject:dice3 atIndex:2];
+                [dicesRolled insertObject:dice4 atIndex:3];
+                [dicesRolled insertObject:dice5 atIndex:4];
+                
+                [gameController storeDicesRolled:dicesRolled];
+                
+                printDices(gameController);
+                
+                printf("\nHow many dices do you wanna hold:\n");
+                scanf("%d", &numberOfDicesToHold);
+                
+                if(numberOfDicesToHold > 0){
+                    printf("\nEnter the index of the dice(s) you wanna hold:\n");
+                    int indexDice;
+                    for(int index = 0; index < numberOfDicesToHold; index++){
+                        scanf("%d", &indexDice);
+                        if(indexDice > 0 && indexDice < 6){
+                            [gameController holdDice:(indexDice-1)];
+                        }else{
+                            printf("\nInvalid index!\nTry again...\n");
+                            index--;
+                        }
+                    }
+                    printDices(gameController);
+                }
+            }
             
-            NSLog(@"\nD1: %d - D2: %d - D3: %d - D4: %d - D5: %d", [dice1 currentValue], [dice2 currentValue], [dice3 currentValue], [dice4 currentValue], [dice5 currentValue]);
             printf("\n");
+            while ( (c = getchar()) != '\n' && c != EOF );
         }
     }
     return 0;
+}
+
+void printDices(GameController *gameController){
+    NSMutableString *dicesToPrint = [[NSMutableString alloc] init];
+    for(int i = 0; i < 5; i++){
+        if([[gameController.dicesRolled objectAtIndex:i] isDiceHold]){
+            [dicesToPrint appendFormat:@"D%d: [%d] ", i+1, [[gameController.dicesRolled objectAtIndex:i] currentValue]];
+        }else{
+            [dicesToPrint appendFormat:@"D%d: %d ", i+1, [[gameController.dicesRolled objectAtIndex:i] currentValue]];
+        }
+        
+        if(i < 4){
+            [dicesToPrint appendFormat:@"- "];
+        }
+    }
+    NSLog(@"\n\n%@", dicesToPrint);
 }

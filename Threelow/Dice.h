@@ -11,7 +11,12 @@
 @interface Dice : NSObject
 
 @property int currentValue;
+@property Boolean isDiceHold;
+
+- (id)initWithDiceHold;
 
 - (int)rollDice;
+
+- (void)holdDice:(Boolean)hold;
 
 @end
