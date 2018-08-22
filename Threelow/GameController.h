@@ -11,11 +11,14 @@
 @interface GameController : NSObject
 
 @property NSMutableArray *dicesRolled;
+@property int score;
 
 - (id)initWithDiceArrays;
 
 - (void)storeDicesRolled:(NSMutableArray *)aDicesRolled;
 
-- (void)holdDice:(int)diceNumber;
+- (void)holdDiceByIndex:(int)diceNumber;
+
+- (void)resetDices;
 
 @end

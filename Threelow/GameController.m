@@ -14,7 +14,7 @@
 - (id)initWithDiceArrays{
     self = [super init];
     if(self){
-        self.dicesRolled = [[NSMutableArray alloc] initWithCapacity:6];
+        self.dicesRolled = [[NSMutableArray alloc] initWithCapacity:5];
     }
     return self;
 }
@@ -23,9 +23,24 @@
     self.dicesRolled = aDicesRolled;
 }
 
-- (void)holdDice:(int)diceNumber{
+- (void)holdDiceByIndex:(int)diceNumber{
     Dice *dice = [self.dicesRolled objectAtIndex:diceNumber];
     [dice holdDice:!(dice.isDiceHold)];
+    
+    self.score = 0;
+    for(int index = 0; index < 5; index++){
+        Dice *dice = [self.dicesRolled objectAtIndex:index];
+        if([dice isDiceHold]){
+            self.score += [dice currentValue];
+        }
+    }
+}
+
+- (void)resetDices{
+    for(int index = 0; index < 5; index++){
+        [[self.dicesRolled objectAtIndex:index] holdDice:false];
+    }
+    self.score = 0;
 }
 
 @end

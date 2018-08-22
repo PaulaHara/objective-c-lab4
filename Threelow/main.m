@@ -11,6 +11,7 @@
 #import "GameController.h"
 
 void printDices(GameController *gameController);
+Boolean verifyIfPlayerHasUnHoldDices(GameController *gameController);
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -25,9 +26,10 @@ int main(int argc, const char * argv[]) {
         NSMutableArray *dicesRolled = [[NSMutableArray alloc] initWithCapacity:6];
         GameController *gameController = [[GameController alloc] initWithDiceArrays];
         int numberOfDicesToHold, c;
+        Boolean playerHasUnHoldDice = true;
         
-        while([userInput isEqualToString:@"roll"]){
-            printf("To roll the dices type 'roll':\n");
+        while(playerHasUnHoldDice){
+            printf("roll - Roll dices\nreset - Reset all held dices:\n");
             fgets(input, 255, stdin);
             userInput = [[[NSString stringWithUTF8String:input] lowercaseString] stringByReplacingOccurrencesOfString:@"\n" withString:@""];
             
@@ -57,7 +59,7 @@ int main(int argc, const char * argv[]) {
                     for(int index = 0; index < numberOfDicesToHold; index++){
                         scanf("%d", &indexDice);
                         if(indexDice > 0 && indexDice < 6){
-                            [gameController holdDice:(indexDice-1)];
+                            [gameController holdDiceByIndex:(indexDice-1)];
                         }else{
                             printf("\nInvalid index!\nTry again...\n");
                             index--;
@@ -65,8 +67,14 @@ int main(int argc, const char * argv[]) {
                     }
                     printDices(gameController);
                 }
+                
+                playerHasUnHoldDice = verifyIfPlayerHasUnHoldDices(gameController);
+            }else if([userInput isEqualToString:@"reset"]){
+                [gameController resetDices];
+                printDices(gameController);
+            }else{
+                printf("\nInvalid option!\nTry Again...(press enter)");
             }
-            
             printf("\n");
             while ( (c = getchar()) != '\n' && c != EOF );
         }
@@ -77,15 +85,27 @@ int main(int argc, const char * argv[]) {
 void printDices(GameController *gameController){
     NSMutableString *dicesToPrint = [[NSMutableString alloc] init];
     for(int i = 0; i < 5; i++){
+        Dice *dice = [gameController.dicesRolled objectAtIndex:i];
+        
         if([[gameController.dicesRolled objectAtIndex:i] isDiceHold]){
-            [dicesToPrint appendFormat:@"D%d: [%d] ", i+1, [[gameController.dicesRolled objectAtIndex:i] currentValue]];
+            [dicesToPrint appendFormat:@"D%d: [%d] ", i+1, [dice currentValue]];
         }else{
-            [dicesToPrint appendFormat:@"D%d: %d ", i+1, [[gameController.dicesRolled objectAtIndex:i] currentValue]];
+            [dicesToPrint appendFormat:@"D%d: %d ", i+1, [dice currentValue]];
         }
         
-        if(i < 4){
-            [dicesToPrint appendFormat:@"- "];
+        [dicesToPrint appendFormat:@"- "];
+        if(i == 4){
+            [dicesToPrint appendFormat:@"Total Score: %d", [gameController score]];
         }
     }
     NSLog(@"\n\n%@", dicesToPrint);
+}
+
+Boolean verifyIfPlayerHasUnHoldDices(GameController *gameController){
+    for(int i = 0; i < 5; i++){
+        if(![[gameController.dicesRolled objectAtIndex:i] isDiceHold]){
+            return true;
+        }
+    }
+    return false;
 }
