@@ -10,6 +10,7 @@
 		DA055149212CE7B0005EBC53 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DA055148212CE7B0005EBC53 /* main.m */; };
 		DA055151212CE952005EBC53 /* Dice.m in Sources */ = {isa = PBXBuildFile; fileRef = DA055150212CE952005EBC53 /* Dice.m */; };
 		DA055154212CF7F0005EBC53 /* GameController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA055153212CF7F0005EBC53 /* GameController.m */; };
+		DA62C9FF212F9DFD002B24E3 /* NumberUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DA62C9FE212F9DFD002B24E3 /* NumberUtils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,8 @@
 		DA055150212CE952005EBC53 /* Dice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Dice.m; sourceTree = "<group>"; };
 		DA055152212CF7F0005EBC53 /* GameController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameController.h; sourceTree = "<group>"; };
 		DA055153212CF7F0005EBC53 /* GameController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameController.m; sourceTree = "<group>"; };
+		DA62C9FD212F9DFD002B24E3 /* NumberUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NumberUtils.h; sourceTree = "<group>"; };
+		DA62C9FE212F9DFD002B24E3 /* NumberUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NumberUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +71,8 @@
 				DA055150212CE952005EBC53 /* Dice.m */,
 				DA055152212CF7F0005EBC53 /* GameController.h */,
 				DA055153212CF7F0005EBC53 /* GameController.m */,
+				DA62C9FD212F9DFD002B24E3 /* NumberUtils.h */,
+				DA62C9FE212F9DFD002B24E3 /* NumberUtils.m */,
 			);
 			path = Threelow;
 			sourceTree = "<group>";
@@ -130,6 +135,7 @@
 			files = (
 				DA055154212CF7F0005EBC53 /* GameController.m in Sources */,
 				DA055151212CE952005EBC53 /* Dice.m in Sources */,
+				DA62C9FF212F9DFD002B24E3 /* NumberUtils.m in Sources */,
 				DA055149212CE7B0005EBC53 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,6 +7,7 @@
 //
 
 #import "GameController.h"
+#import "NumberUtils.h"
 
 @implementation GameController
 
@@ -23,6 +24,42 @@
     return self;
 }
 
+- (void)countNumOfRollsAndHoldDices {
+    [self printDices];
+    
+    self.numberOfRolls++;
+    
+    char input[255];
+    NSString *wordNumber;
+    int numberOfDicesToHold = 0;
+    while(numberOfDicesToHold == 0){
+        printf("\nHow many dices do you wanna hold:\n");
+        fgets(input, 255, stdin);
+        wordNumber = [[[NSString stringWithUTF8String:input] lowercaseString] stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+        numberOfDicesToHold = [NumberUtils getNumberizeWord:wordNumber];
+        
+        if(numberOfDicesToHold > 0){
+            printf("\nEnter the number of the dice(s) you wanna hold:\n");
+            int indexDice;
+            for(int index = 0; index < numberOfDicesToHold; index++){
+                scanf("%d", &indexDice);
+                
+                if(indexDice > 0 && indexDice < 6){
+                    [self holdDiceByIndex:(indexDice-1)];
+                }else{
+                    printf("\nInvalid index!\nTry again...\nEnter the number of the dice(s) you wanna hold:\n");
+                    index--;
+                }
+            }
+            [self printDices];
+        }else{
+            printf("\nYou have to hold at least 1 dice.\nTry Again...\n");
+            numberOfDicesToHold = 0;
+        }
+    }
+    numberOfDicesToHold = 0;
+}
+
 - (void)rollDices{
     if(self.numberOfRolls < 5){
         [self.d1 rollDice];
@@ -37,35 +74,7 @@
         [self.dicesRolled insertObject:self.d4 atIndex:3];
         [self.dicesRolled insertObject:self.d5 atIndex:4];
         
-        [self printDices];
-        
-        self.numberOfRolls++;
-        
-        int numberOfDicesToHold = 0;
-        while(numberOfDicesToHold == 0){
-            printf("\nHow many dices do you wanna hold:\n");
-            // I'm not validating if the input is not a number, if it's not the game will get stuck in an infinite loop
-            scanf("%d", &numberOfDicesToHold);
-            
-            if(numberOfDicesToHold > 0){
-                printf("\nEnter the number of the dice(s) you wanna hold:\n");
-                int indexDice;
-                for(int index = 0; index < numberOfDicesToHold; index++){
-                    // Same here
-                    scanf("%d", &indexDice);
-                    if(indexDice > 0 && indexDice < 6){
-                        [self holdDiceByIndex:(indexDice-1)];
-                    }else{
-                        printf("\nInvalid index!\nTry again...\nEnter the number of the dice(s) you wanna hold:\n");
-                        index--;
-                    }
-                }
-                [self printDices];
-            }else{
-                printf("\nYou have to hold at least 1 dice.\nTry Again...\n");
-            }
-        }
-        numberOfDicesToHold = 0;
+        [self countNumOfRollsAndHoldDices];
     }else{
         NSLog(@"\n\nYou can't roll again, you need to reset.");
     }
@@ -125,6 +134,22 @@
     [self.d3 holdDice:false];
     [self.d4 holdDice:false];
     [self.d5 holdDice:false];
+}
+
+- (void)rollLoadedDice{
+    self.d1.currentValue = 3;
+    self.d2.currentValue = 3;
+    self.d3.currentValue = 3;
+    self.d4.currentValue = 3;
+    self.d5.currentValue = 3;
+    
+    [self.dicesRolled insertObject:self.d1 atIndex:0];
+    [self.dicesRolled insertObject:self.d2 atIndex:1];
+    [self.dicesRolled insertObject:self.d3 atIndex:2];
+    [self.dicesRolled insertObject:self.d4 atIndex:3];
+    [self.dicesRolled insertObject:self.d5 atIndex:4];
+    
+    [self countNumOfRollsAndHoldDices];
 }
 
 @end

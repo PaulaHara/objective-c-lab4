@@ -32,4 +32,6 @@
 
 - (void)restartGame;
 
+- (void)rollLoadedDice;
+
 @end
